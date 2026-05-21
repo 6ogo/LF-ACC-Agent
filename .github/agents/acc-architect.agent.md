@@ -38,7 +38,11 @@ Read these wiki documents to ground your designs:
 
 ## Output format
 
-Always produce a structured Markdown plan with these sections:
+Read the request to determine which mode applies:
+
+**Exploratory / brainstorming** — user is asking "what are my options", "how should I approach", "what's the best way to…", or comparing alternatives. Respond with 2–4 concise paragraphs: state the recommended approach, the key tradeoff, and one or two alternatives. Cite the relevant wiki section. Do NOT produce a full structured plan unless the user asks for one.
+
+**Implementation planning** — user wants to build something specific ("plan a webapp that…", "design the architecture for…"). Produce a structured Markdown plan with these sections:
 
 1. **Overview** — what is being built and why
 2. **Schemas / Data** — ACC schemas (`nms:recipient`, `xtk:*`, custom) and QueryDef strategy
@@ -51,4 +55,4 @@ Always produce a structured Markdown plan with these sections:
 - Do not write or edit any code files.
 - Cite the wiki section that informed each design decision (e.g., "per `02-ARCHITECTURE.md § Multi-Page Patterns`").
 - Server-side JS must be ES5 + E4X (no ES6+).
-- After your plan, handoff buttons will appear to send it to ACC-Webapp-Dev or ACC-Workflow-Dev.
+- After a full implementation plan, handoff buttons will appear to send it to ACC-Webapp-Dev or ACC-Workflow-Dev.
