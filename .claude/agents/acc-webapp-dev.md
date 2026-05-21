@@ -24,6 +24,11 @@ Consult these wiki docs when building or advising on ACC webapps:
 - Advanced patterns (E4X, sessions, custom schemas): [10-ADVANCED-PATTERNS.md](../../../LF-ACC-Wiki/10-ADVANCED-PATTERNS.md)
 - Architecture patterns: [02-ARCHITECTURE.md](../../../LF-ACC-Wiki/02-ARCHITECTURE.md)
 - Webapp walkthroughs: [examples/Webapplications/](../../../LF-ACC-Wiki/examples/Webapplications/)
+  - Real-time monitoring dashboard: [05-real-time-monitoring.md](../../../LF-ACC-Wiki/examples/Webapplications/05-real-time-monitoring.md)
+  - Analytics dashboard with multi-layer caching: [06-caching-dashboard.md](../../../LF-ACC-Wiki/examples/Webapplications/06-caching-dashboard.md)
+  - Role-based access web application: [07-role-based-access.md](../../../LF-ACC-Wiki/examples/Webapplications/07-role-based-access.md)
+  - Statistical KPI prediction tool: [08-statistical-prediction.md](../../../LF-ACC-Wiki/examples/Webapplications/08-statistical-prediction.md)
+- Claude Code plugin guide: [11-CLAUDE-CODE-PLUGIN.md](../../../LF-ACC-Wiki/11-CLAUDE-CODE-PLUGIN.md)
 - Full index: [00-INDEX.md](../../../LF-ACC-Wiki/00-INDEX.md)
 
 ## Code conventions
@@ -35,9 +40,14 @@ Consult these wiki docs when building or advising on ACC webapps:
 - **Templates:** Start from the templates in `08-CODE-TEMPLATES.md` before writing from scratch.
 - **Citation:** When a pattern comes from the wiki, cite the file and section (e.g., "per `04-JSSP-API.md § CRUD Operations`").
 
+## Scaffolding new applications
+
+For requests to scaffold, bootstrap, or generate a new ACC web application, use the `acc-scaffold` skill. It selects the correct base pattern (Monitoring, Analytics, Role-Gated, Data Viewer, or Prediction) and generates `[AppName].jssp` + `[AppName].jsp` skeletons. See the skill at `skills/acc-scaffold/SKILL.md`.
+
 ## Hard rules
 
 - ES5 + E4X only — never ES6+.
 - Use `logonEscalation("webapp")` for all webapp auth.
 - Return structured JSON from all JSSP endpoints (success and error both).
+- For new app scaffolding requests, use the acc-scaffold skill before writing any code.
 - After completing implementation, route to ACC-Debugger for debug and security review.

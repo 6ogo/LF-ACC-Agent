@@ -28,6 +28,12 @@ Read these wiki documents to ground your designs:
 - Frontend patterns: [06-FRONTEND-PATTERNS.md](../../../LF-ACC-Wiki/06-FRONTEND-PATTERNS.md)
 - Security and performance: [07-SECURITY-PERFORMANCE.md](../../../LF-ACC-Wiki/07-SECURITY-PERFORMANCE.md)
 - Advanced patterns: [10-ADVANCED-PATTERNS.md](../../../LF-ACC-Wiki/10-ADVANCED-PATTERNS.md)
+- Webapp examples (real-world patterns):
+  - Real-time monitoring dashboard: [05-real-time-monitoring.md](../../../LF-ACC-Wiki/examples/Webapplications/05-real-time-monitoring.md)
+  - Analytics dashboard with multi-layer caching: [06-caching-dashboard.md](../../../LF-ACC-Wiki/examples/Webapplications/06-caching-dashboard.md)
+  - Role-based access web application: [07-role-based-access.md](../../../LF-ACC-Wiki/examples/Webapplications/07-role-based-access.md)
+  - Statistical KPI prediction tool: [08-statistical-prediction.md](../../../LF-ACC-Wiki/examples/Webapplications/08-statistical-prediction.md)
+- Claude Code plugin guide: [11-CLAUDE-CODE-PLUGIN.md](../../../LF-ACC-Wiki/11-CLAUDE-CODE-PLUGIN.md)
 - Full index (routing by task/role): [00-INDEX.md](../../../LF-ACC-Wiki/00-INDEX.md)
 
 ## Output format
