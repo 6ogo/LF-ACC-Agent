@@ -96,8 +96,18 @@ Type `/agents` in the Copilot Chat input — all four `ACC-*` agents should appe
 
 - *ACC-Architect:* "Plan the architecture for a JSSP endpoint that lists recipients filtered by typology rule, with pagination — what schemas, query structure, and JSSP methods would you recommend?"
 - *ACC-Webapp-Dev:* "Build a JSP page with a filterable recipient table and AJAX refresh."
+- *ACC-Webapp-Dev (scaffold):* `/acc-scaffold MonitorDash — live delivery open/click rates with anomaly alerts`
 - *ACC-Workflow-Dev:* "Write a workflow script that loads deliveries modified today and updates their sender info."
 - *ACC-Debugger:* "My QueryDef returns no rows but the same filter works in the GUI — what's wrong?"
+
+## Skills and commands
+
+| Name | Type | Purpose |
+|------|------|---------|
+| `acc-scaffold` | Command + Skill | Scaffold a new ACC webapp (JSP + JSSP) from one of 5 production patterns |
+| `acc-wiki-map` | Skill | Map any topic or task to the right wiki file |
+
+**`/acc-scaffold <description>`** — describe your app and get a working JSSP + JSP skeleton. Picks from five patterns: Monitoring, Analytics, Role-Gated, Data Viewer, or Prediction.
 
 ## Knowledge base scope
 
@@ -111,6 +121,8 @@ The wiki (and therefore these agents) covers:
 - Troubleshooting and debugging
 - Advanced patterns (E4X, sessions, custom schemas)
 - Workflow scripting (ETL, delivery management)
+- Advanced webapp examples (real-time monitoring, caching dashboards, role-based access, KPI prediction)
+- Building a Claude Code plugin for ACC development
 
 **Not covered:** SOAP API internals, ACC server installation/upgrade, marketing campaign UI. For those, see [Adobe Experience League](https://experienceleague.adobe.com/docs/campaign-classic.html).
 
@@ -129,6 +141,18 @@ LF-ACC-Agent/
 ├── AGENTS.md                        # shared rules for all agents
 ├── CLAUDE.md                        # Claude Code entry point → AGENTS.md
 ├── README.md                        # this file
+├── commands/
+│   └── acc-scaffold.md              # /acc-scaffold slash command
+├── skills/
+│   ├── acc-scaffold/
+│   │   ├── SKILL.md                 # 5-pattern scaffold procedure
+│   │   └── references/
+│   │       └── scaffold-templates.md  # ES5+E4X skeleton code per pattern
+│   └── acc-wiki-map/
+│       ├── SKILL.md                 # topic-to-file routing table
+│       └── references/
+│           ├── by-task.md           # task-to-file index
+│           └── gaps.md              # known wiki gaps
 ├── .github/
 │   ├── copilot-instructions.md      # Copilot repo-level instructions
 │   └── agents/
