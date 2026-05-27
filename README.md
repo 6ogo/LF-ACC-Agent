@@ -1,191 +1,161 @@
 # LF-ACC-Agent
 
-Shareable VS Code AI agents for Adobe Campaign Classic (ACC) development, grounded in the [LF-ACC-Wiki](../LF-ACC-Wiki) knowledge base.
+LF-ACC-Agent is a shareable agent pack for Adobe Campaign Classic development in VS Code.
 
-## Agents
+It provides specialized AI agents for:
+- ACC web application work (JSP, JSSP, QueryDef, frontend)
+- ACC workflow scripting (ETL, delivery operations, file handling)
+- Debugging, performance checks, and security-focused reviews
 
-| Agent | Purpose | Tools |
-|---|---|---|
-| **ACC-Architect** | Plan webapps, workflows, schemas. Read-only — no code edits. | Search, web |
-| **ACC-Webapp-Dev** | Build JSP pages, JSSP APIs, QueryDef, frontend. | Edit, search |
-| **ACC-Workflow-Dev** | Build workflow scripts, ETL, delivery management. | Edit, search |
-| **ACC-Debugger** | Diagnose bugs, performance, security issues. | Search, edit |
+All agent guidance is grounded in LF-ACC-Wiki, which must exist as a sibling folder next to this repository.
 
-### Workflow (with handoffs)
+## Quick Start
 
-```
-ACC-Architect (plan)
-      ↓ handoff
-ACC-Webapp-Dev     ACC-Workflow-Dev
-(build webapp)     (build workflow)
-      ↓ handoff           ↓ handoff
-         ACC-Debugger
-         (debug + review)
-```
+1. Clone both repositories as siblings.
+2. Open LF-ACC-Agent in VS Code.
+3. Install recommended extensions.
+4. Run the installer script.
+5. Select an ACC agent in chat and start prompting.
+
+## What You Get
+
+| Agent | Main job |
+|---|---|
+| ACC-Architect | Plan schemas, webapps, workflows, and implementation approach (read-only planning) |
+| ACC-Webapp-Dev | Build and update JSP, JSSP, QueryDef, and frontend logic |
+| ACC-Workflow-Dev | Build and update workflow scripts and automation logic |
+| ACC-Debugger | Diagnose and fix ACC webapp/workflow issues |
+
+Typical flow:
+
+ACC-Architect plans first, then handoff to ACC-Webapp-Dev or ACC-Workflow-Dev, and finally ACC-Debugger for validation and fixes.
 
 ## Installation
 
 ### Prerequisites
 
-- **VS Code** (any recent version)
-- **GitHub Copilot Chat** extension — `GitHub.copilot-chat` (requires an active GitHub Copilot subscription), **and/or**
-- **Claude Code** extension — `anthropic.claude-code` (requires an Anthropic/Claude account)
+- VS Code (recent version)
+- One of these chat runtimes:
+      - GitHub Copilot Chat extension: GitHub.copilot-chat
+      - Claude Code extension: anthropic.claude-code
 
-### Step 1 — Clone both repos as siblings
+### 1) Clone as sibling folders
 
-Both repos must live side-by-side in the same parent directory. The agents reference the wiki via relative paths (`../LF-ACC-Wiki/`), so the sibling layout is required.
+From the same parent directory:
 
 ```bash
-# Clone into the same parent directory
 git clone https://github.com/6ogo/LF-ACC-Wiki.git
 git clone https://github.com/6ogo/LF-ACC-Agent.git
 ```
 
-Result:
-```
+Expected layout:
+
+```text
 parent-folder/
-├── LF-ACC-Wiki/    ← knowledge base (source of truth, do not open this in VS Code)
-└── LF-ACC-Agent/   ← open THIS in VS Code
+      LF-ACC-Wiki/
+      LF-ACC-Agent/
 ```
 
-> If you already have LF-ACC-Wiki cloned elsewhere, move or re-clone it so it is a direct sibling of LF-ACC-Agent.
+Important: LF-ACC-Wiki must be a direct sibling of LF-ACC-Agent, not nested elsewhere.
 
-### Step 2 — Open LF-ACC-Agent in VS Code
+### 2) Open LF-ACC-Agent in VS Code
 
 ```bash
 code LF-ACC-Agent
 ```
 
-Or use **File → Open Folder** and select the `LF-ACC-Agent` directory.
+### 3) Install workspace extension recommendations
 
-### Step 3 — Install recommended extensions
+When VS Code prompts, install all recommended extensions.
+If needed, install manually from the Extensions panel:
+- GitHub.copilot-chat
+- anthropic.claude-code
 
-VS Code will show a notification: *"This workspace has extension recommendations."* Click **Install All**.
+Sign in to the extension(s) you installed.
 
-To install manually:
-- `Ctrl+Shift+X` → search `GitHub.copilot-chat` → Install
-- `Ctrl+Shift+X` → search `anthropic.claude-code` → Install
+### 4) Install agents globally
 
-Sign in to each extension with your GitHub / Anthropic account when prompted.
-
-### Step 4 — Install agents globally (recommended)
-
-Run the installer script from the repo root:
+Run from the LF-ACC-Agent repo root:
 
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ./install.ps1
 ```
 
-This copies ACC agent files into your VS Code user global storage so they are available across repositories.
+This installs the ACC agent definitions into your VS Code user global storage so they can be used across projects.
 
-### Step 5 — Uninstall (optional)
-
-To remove globally installed ACC agents:
+### 5) Optional uninstall
 
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ./uninstall.ps1
 ```
 
-### Step 6 — Open the agent in chat
+## Start Using The Agents
 
-**GitHub Copilot Chat:**
-1. Open the Chat panel (`Ctrl+Alt+I` or click the chat icon in the sidebar)
-2. Click the **agent picker** (the `@` or agent dropdown at the top of the chat input)
-3. Select `ACC-Architect`, `ACC-Webapp-Dev`, `ACC-Workflow-Dev`, or `ACC-Debugger`
+### In GitHub Copilot Chat
 
-**Claude Code:**
-1. Open the Claude Code panel from the sidebar or command palette
-2. Switch to the relevant ACC agent from the agent menu
+1. Open Chat.
+2. Open the agent picker at the top of the input.
+3. Select one of: ACC-Architect, ACC-Webapp-Dev, ACC-Workflow-Dev, ACC-Debugger.
+4. Enter your task with ACC context and desired outcome.
 
-### Verifying the setup
+### In Claude Code
 
-Type `/agents` in the Copilot Chat input — all four `ACC-*` agents should appear in the list. If they don't, check:
-- `LF-ACC-Wiki` is a direct sibling of `LF-ACC-Agent` (not nested or renamed)
-- You opened `LF-ACC-Agent` as the workspace root (not a parent folder)
-- The Copilot Chat extension is installed and signed in
+1. Open Claude Code in VS Code.
+2. Pick the ACC agent from the agent list.
+3. Enter your task with ACC context and desired outcome.
 
-## Usage
+### Verify Setup
 
-**GitHub Copilot Chat:** Open Chat panel → click the agent picker → choose an `ACC-*` agent.
+In chat, run:
 
-**Claude Code:** Open the Claude Code panel → switch to the relevant ACC agent from the agent menu.
+```text
+/agents
+```
 
-### Example prompts
+You should see all ACC agents listed.
 
-- *ACC-Architect:* "Plan the architecture for a JSSP endpoint that lists recipients filtered by typology rule, with pagination — what schemas, query structure, and JSSP methods would you recommend?"
-- *ACC-Webapp-Dev:* "Build a JSP page with a filterable recipient table and AJAX refresh."
-- *ACC-Webapp-Dev (scaffold):* `/acc-scaffold MonitorDash — live delivery open/click rates with anomaly alerts`
-- *ACC-Workflow-Dev:* "Write a workflow script that loads deliveries modified today and updates their sender info."
-- *ACC-Debugger:* "My QueryDef returns no rows but the same filter works in the GUI — what's wrong?"
+If not:
+- Confirm LF-ACC-Wiki and LF-ACC-Agent are siblings.
+- Confirm LF-ACC-Agent is the opened workspace root.
+- Restart VS Code after running install.ps1.
 
-## Skills and commands
+## First Prompts To Try
 
-| Name | Type | Purpose |
-|------|------|---------|
-| `acc-scaffold` | Command + Skill | Scaffold a new ACC webapp (JSP + JSSP) from one of 5 production patterns |
-| `acc-wiki-map` | Skill | Map any topic or task to the right wiki file |
+- ACC-Architect: Plan a recipient search JSSP endpoint with pagination and role checks.
+- ACC-Webapp-Dev: Build a JSP dashboard with AJAX filters and QueryDef-backed data table.
+- ACC-Workflow-Dev: Create a workflow script that updates sender metadata for today modified deliveries.
+- ACC-Debugger: Investigate why a QueryDef returns no rows although GUI filtering works.
 
-**`/acc-scaffold <description>`** — describe your app and get a working JSSP + JSP skeleton. Picks from five patterns: Monitoring, Analytics, Role-Gated, Data Viewer, or Prediction.
+Scaffolding shortcut:
 
-## Knowledge base scope
+```text
+/acc-scaffold MonitorDash live delivery open and click rates with anomaly alerts
+```
 
-The wiki (and therefore these agents) covers:
-- JSP page development
-- JSSP API development
-- QueryDef / database queries
-- Frontend patterns (CSS, charts, forms)
-- Security and performance
-- Code templates
-- Troubleshooting and debugging
-- Advanced patterns (E4X, sessions, custom schemas)
-- Workflow scripting (ETL, delivery management)
-- Advanced webapp examples (real-time monitoring, caching dashboards, role-based access, KPI prediction)
-- Building a Claude Code plugin for ACC development
+## Scope
 
-**Not covered:** SOAP API internals, ACC server installation/upgrade, marketing campaign UI. For those, see [Adobe Experience League](https://experienceleague.adobe.com/docs/campaign-classic.html).
+Covered topics include:
+- JSP and JSSP development
+- QueryDef and ACC data access patterns
+- Workflow scripting and ETL patterns
+- Security, performance, troubleshooting
+- Advanced webapp examples and templates
 
-## Updating the knowledge base
+Out of scope:
+- SOAP API internals
+- ACC server installation and upgrade
+- Marketing campaign UI operations
 
-The agents reference `../LF-ACC-Wiki` via relative paths — no copying needed. Pull the latest wiki and restart your chat session to pick up new content:
+For out-of-scope areas, use Adobe Experience League:
+https://experienceleague.adobe.com/docs/campaign-classic.html
+
+## Keep Knowledge Current
+
+Update the wiki and restart chat sessions when needed:
 
 ```bash
-cd ../LF-ACC-Wiki && git pull
-```
-
-## File layout
-
-```
-LF-ACC-Agent/
-├── AGENTS.md                        # shared rules for all agents
-├── CLAUDE.md                        # Claude Code entry point → AGENTS.md
-├── README.md                        # this file
-├── commands/
-│   └── acc-scaffold.md              # /acc-scaffold slash command
-├── skills/
-│   ├── acc-scaffold/
-│   │   ├── SKILL.md                 # 5-pattern scaffold procedure
-│   │   └── references/
-│   │       └── scaffold-templates.md  # ES5+E4X skeleton code per pattern
-│   └── acc-wiki-map/
-│       ├── SKILL.md                 # topic-to-file routing table
-│       └── references/
-│           ├── by-task.md           # task-to-file index
-│           └── gaps.md              # known wiki gaps
-├── .github/
-│   ├── copilot-instructions.md      # Copilot repo-level instructions
-│   └── agents/
-│       ├── acc-architect.agent.md   # Copilot format
-│       ├── acc-webapp-dev.agent.md
-│       ├── acc-workflow-dev.agent.md
-│       └── acc-debugger.agent.md
-├── .claude/
-│   └── agents/
-│       ├── acc-architect.md         # Claude Code format
-│       ├── acc-webapp-dev.md
-│       ├── acc-workflow-dev.md
-│       └── acc-debugger.md
-└── .vscode/
-    └── extensions.json              # recommends Copilot + Claude Code
+cd ../LF-ACC-Wiki
+git pull
 ```
