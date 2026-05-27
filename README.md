@@ -68,7 +68,27 @@ To install manually:
 
 Sign in to each extension with your GitHub / Anthropic account when prompted.
 
-### Step 4 — Open the agent in chat
+### Step 4 — Install agents globally (recommended)
+
+Run the installer script from the repo root:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+./install.ps1
+```
+
+This copies ACC agent files into your VS Code user global storage so they are available across repositories.
+
+### Step 5 — Uninstall (optional)
+
+To remove globally installed ACC agents:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+./uninstall.ps1
+```
+
+### Step 6 — Open the agent in chat
 
 **GitHub Copilot Chat:**
 1. Open the Chat panel (`Ctrl+Alt+I` or click the chat icon in the sidebar)

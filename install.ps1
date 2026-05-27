@@ -1,35 +1,70 @@
-# PowerShell script to build and install the ACC Agents VS Code extension globally
-# Usage: Run this script from the project root after cloning
+# PowerShell script to install ACC Copilot agents globally (user-scoped)
+# Usage: Run this script from the LF-ACC-Agent repo root after cloning LF-ACC-Wiki as a sibling.
 
-# Ensure script stops on error
 $ErrorActionPreference = 'Stop'
 
-Write-Host "[ACC Agents Installer] Installing dependencies..."
-npm install
+function Copy-AgentFile {
+    param(
+        [Parameter(Mandatory = $true)][string]$SourceFile,
+        [Parameter(Mandatory = $true)][string]$DestinationFile,
+        [string]$WikiUriPrefix
+    )
 
-Write-Host "[ACC Agents Installer] Building extension (if build script exists)..."
-if (Test-Path package.json) {
-    $pkg = Get-Content package.json | ConvertFrom-Json
-    if ($pkg.scripts.build) {
-        npm run build
+    $content = Get-Content -Path $SourceFile -Raw
+
+    if ($WikiUriPrefix) {
+        # Agent files currently reference ../../../LF-ACC-Wiki/. Rewrite to absolute file URI so it works globally.
+        $content = $content -replace '\.\./\.\./\.\./LF-ACC-Wiki/', $WikiUriPrefix
     }
+
+    Set-Content -Path $DestinationFile -Value $content -Encoding UTF8
 }
 
-Write-Host "[ACC Agents Installer] Packaging extension..."
-if (-not (Get-Command vsce -ErrorAction SilentlyContinue)) {
-    Write-Host "[ACC Agents Installer] Installing vsce (VS Code Extension Manager)..."
-    npm install -g vsce
-}
+$repoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$sourceAgentsDir = Join-Path $repoRoot '.github\agents'
 
-vsce package
-
-$vsix = Get-ChildItem *.vsix | Select-Object -First 1
-if (-not $vsix) {
-    Write-Error "[ACC Agents Installer] No .vsix package found. Packaging failed."
+if (-not (Test-Path $sourceAgentsDir)) {
+    Write-Error "[ACC Agents Installer] Source agents folder not found: $sourceAgentsDir"
     exit 1
 }
 
-Write-Host "[ACC Agents Installer] Installing extension globally..."
-code --install-extension $vsix.FullName
+$copilotGlobalRoot = Join-Path $env:APPDATA 'Code\User\globalStorage\github.copilot-chat'
+$accGlobalRoot = Join-Path $copilotGlobalRoot 'acc-agents'
 
-Write-Host "[ACC Agents Installer] Installation complete!"
+New-Item -ItemType Directory -Path $accGlobalRoot -Force | Out-Null
+
+$wikiRepoPath = Join-Path $repoRoot '..\LF-ACC-Wiki'
+$wikiUriPrefix = $null
+if (Test-Path $wikiRepoPath) {
+    $resolvedWikiPath = (Resolve-Path $wikiRepoPath).Path
+    $wikiUriPrefix = ((New-Object System.Uri(($resolvedWikiPath + [System.IO.Path]::DirectorySeparatorChar))).AbsoluteUri)
+    Write-Host "[ACC Agents Installer] Found wiki at: $resolvedWikiPath"
+} else {
+    Write-Warning "[ACC Agents Installer] LF-ACC-Wiki not found as sibling. Installing agents anyway, but wiki links may not resolve."
+}
+
+Write-Host "[ACC Agents Installer] Installing global Copilot agents to: $accGlobalRoot"
+
+$agentFiles = Get-ChildItem -Path $sourceAgentsDir -Filter '*.agent.md' -File
+if (-not $agentFiles) {
+    Write-Error '[ACC Agents Installer] No .agent.md files found in source folder.'
+    exit 1
+}
+
+foreach ($agent in $agentFiles) {
+    $folderName = [System.IO.Path]::GetFileNameWithoutExtension($agent.Name)
+    if ($folderName.EndsWith('.agent')) {
+        $folderName = $folderName.Substring(0, $folderName.Length - '.agent'.Length)
+    }
+
+    $targetDir = Join-Path $accGlobalRoot $folderName
+    New-Item -ItemType Directory -Path $targetDir -Force | Out-Null
+
+    $targetFile = Join-Path $targetDir $agent.Name
+    Copy-AgentFile -SourceFile $agent.FullName -DestinationFile $targetFile -WikiUriPrefix $wikiUriPrefix
+
+    Write-Host "  - Installed $($agent.Name)"
+}
+
+Write-Host '[ACC Agents Installer] Installation complete.'
+Write-Host '[ACC Agents Installer] Restart VS Code to refresh the global agent list.'
